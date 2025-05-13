@@ -1,30 +1,14 @@
 package br.ufma;
 
 public class Parser {
-    private byte[] input;
-    private int current;
+    private Scanner scanner;
 
     public Parser(byte[] input) {
-        this.input = input;
-        this.current = 0;
+        this.scanner = new Scanner(input);
     }
 
     public void parse() {
         expr();
-    }
-
-    private char peek() {
-        if (current < input.length)
-            return (char)input[current];
-        return '\0';
-    }
-
-    private void match(char c) {
-        if (c == peek()) {
-            current++;
-        } else {
-            throw new Error("syntax error");
-        }
     }
 
     private void expr() {
@@ -33,22 +17,22 @@ public class Parser {
     }
 
     private void digit() {
-        if (Character.isDigit(peek())) {
-            System.out.println("push " + peek());
-            match(peek());
+        if (Character.isDigit(scanner.peek())) {
+            System.out.println("push " + scanner.peek());
+            scanner.match(scanner.peek());
         } else {
             throw new Error("syntax error");
         }
     }
 
     private void oper() {
-        if (peek() == '+') {
-            match('+');
+        if (scanner.peek() == '+') {
+            scanner.match('+');
             digit();
             System.out.println("add");
             oper();
-        } else if (peek() == '-') {
-            match('-');
+        } else if (scanner.peek() == '-') {
+            scanner.match('-');
             digit();
             System.out.println("sub");
             oper();
