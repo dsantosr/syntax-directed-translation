@@ -9,6 +9,16 @@ public class Scanner {
         this.current = 0;
     }
 
+    private Token number() {
+        int start = current ;
+        while (Character.isDigit(peek())) {
+            advance();
+        }
+        
+        String n = new String(input, start, current-start)  ;
+        return new Token(TokenType.NUMBER, n);
+    }
+
     private char peek () {
         if (current < input.length)
             return (char)input[current];
@@ -22,24 +32,28 @@ public class Scanner {
         }
     }
 
-    public char nextToken () {
+    public Token nextToken () {
         char ch = peek();
-
-        if (Character.isDigit(ch)) {
+        if (ch == '0') {
             advance();
-            return ch;
-        }
+            return new Token (TokenType.NUMBER, Character.toString(ch));
+        }  else if (Character.isDigit(ch))
+            return number();
+           
+        
 
         switch (ch) {
-            case '+':
-            case '-':
-                advance();
-                return ch;
-            default:
-                break;
+                case '+':
+                    advance();
+                    return new Token (TokenType.PLUS,"+");
+                case '-':
+                    advance();
+                    return new Token (TokenType.MINUS,"-");
+                case '\0':
+                    return new Token (TokenType.EOF,"EOF");
+                default:
+                     throw new Error("lexical error at " + ch);
         }
-
-        return '\0';
     }
 
     public void match(char c) {
