@@ -63,4 +63,42 @@ public class ParserTest {
             System.setOut(originalOut);
         }
     }
+
+    @Test
+    public void testComplexExpression2() {
+        String input = "89+508-7+99";
+        String expected = "push 89\npush 508\nadd\npush 7\nsub\npush 99\nadd\n";
+        
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        PrintStream originalOut = System.out;
+        System.setOut(new PrintStream(outContent));
+        
+        try {
+            Parser parser = new Parser(input.getBytes());
+            parser.parse();
+            String actual = outContent.toString().replace("\r\n", "\n");
+            assertEquals(expected, actual);
+        } finally {
+            System.setOut(originalOut);
+        }
+    }
+
+    @Test
+    public void testExpressionWithWhitespace() {
+        String input = "45  + 89   -       876";
+        String expected = "push 45\npush 89\nadd\npush 876\nsub\n";
+        
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        PrintStream originalOut = System.out;
+        System.setOut(new PrintStream(outContent));
+        
+        try {
+            Parser parser = new Parser(input.getBytes());
+            parser.parse();
+            String actual = outContent.toString().replace("\r\n", "\n");
+            assertEquals(expected, actual);
+        } finally {
+            System.setOut(originalOut);
+        }
+    }
 }
