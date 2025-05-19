@@ -21,13 +21,38 @@ public class Parser {
         }
     }
 
-    public void parse() {
-        expr();
+    public void parse () {
+        letStatement();
     }
 
-    private void expr() {
-        number();
+    void expr() {
+        term ();
         oper();
+    }
+
+    void oper () {
+        if (currentToken.type == TokenType.PLUS) {
+            match(TokenType.PLUS);
+            term();
+            System.out.println("add");
+            oper();
+        } else if (currentToken.type == TokenType.MINUS) {
+            match(TokenType.MINUS);
+            term();
+            System.out.println("sub");
+            oper();
+        }
+    }
+
+    void term () {
+        if (currentToken.type == TokenType.NUMBER)
+            number();
+        else if (currentToken.type == TokenType.IDENT) {
+            System.out.println("push "+currentToken.lexeme);
+            match(TokenType.IDENT);
+        }
+        else
+            throw new Error("syntax error");
     }
 
     void number () {
@@ -35,17 +60,13 @@ public class Parser {
         match(TokenType.NUMBER);
     }
 
-    void oper () {
-        if (currentToken.type == TokenType.PLUS) {
-            match(TokenType.PLUS);
-            number();
-            System.out.println("add");
-            oper();
-        } else if (currentToken.type == TokenType.MINUS) {
-            match(TokenType.MINUS);
-            number();
-            System.out.println("sub");
-            oper();
-        } 
+    void letStatement () {
+        match(TokenType.LET);
+        var id = currentToken.lexeme;
+        match(TokenType.IDENT);
+        match(TokenType.EQ);
+        expr();
+        System.out.println("pop "+id);
+        match(TokenType.SEMICOLON);
     }
 } 
