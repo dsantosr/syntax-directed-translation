@@ -16,7 +16,7 @@ public class ScannerTest {
         while ((token = scanner.nextToken()).type != TokenType.EOF) {
             output.append(token).append("\n");
         }
-        output.append(token).append("\n"); // Add EOF token
+        output.append(token).append("\n");
         
         assertEquals(expected, output.toString());
     }
@@ -32,7 +32,7 @@ public class ScannerTest {
         while ((token = scanner.nextToken()).type != TokenType.EOF) {
             output.append(token).append("\n");
         }
-        output.append(token).append("\n"); // Add EOF token
+        output.append(token).append("\n");
         
         assertEquals(expected, output.toString());
     }
@@ -49,8 +49,8 @@ public class ScannerTest {
         while ((token = scanner.nextToken()).type != TokenType.EOF) {
             output.append(token).append("\n");
         }
-        output.append(token).append("\n"); // Add EOF token
-        
+        output.append(token).append("\n");
+
         assertEquals(expected, output.toString());
     }
 }
