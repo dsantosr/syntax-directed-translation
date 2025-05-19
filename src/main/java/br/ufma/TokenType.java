@@ -8,7 +8,7 @@ public enum TokenType {
     IDENT,
 
     LET,
-
+    PRINT,
 
     EOF
 } 

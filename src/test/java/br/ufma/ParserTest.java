@@ -103,9 +103,33 @@ public class ParserTest {
     }
 
     @Test
-    public void testLetStatementWithAddition() {
+    public void testLetStatement() {
         String input = "let a = 42 + 5 - 8;";
         String expected = "push 42\npush 5\nadd\npush 8\nsub\npop a\n";
+
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        PrintStream originalOut = System.out;
+        System.setOut(new PrintStream(outContent));
+
+        try {
+            Parser parser = new Parser(input.getBytes());
+            parser.parse();
+            String actual = outContent.toString().replace("\r\n", "\n");
+            assertEquals(expected, actual);
+        } finally {
+            System.setOut(originalOut);
+        }
+    }
+
+    @Test
+    public void testMultipleStatements() {
+        String input = "let a = 42 + 5 - 8;\n" +
+                      "let b = 56 + 8;\n" +
+                      "print a + b + 6;";
+        
+        String expected = "push 42\npush 5\nadd\npush 8\nsub\npop a\n" +
+                         "push 56\npush 8\nadd\npop b\n" +
+                         "push a\npush b\nadd\npush 6\nadd\nprint\n";
 
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         PrintStream originalOut = System.out;

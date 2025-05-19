@@ -22,7 +22,30 @@ public class Parser {
     }
 
     public void parse () {
-        letStatement();
+        statements();
+    }
+
+    void statements () {
+        while (currentToken.type != TokenType.EOF) {
+            statement();
+        }
+    }
+
+    void statement () {
+        if (currentToken.type == TokenType.PRINT) {
+            printStatement();
+        } else if (currentToken.type == TokenType.LET) {
+            letStatement();
+        } else {
+            throw new Error("syntax error");
+        }
+    }
+
+    void printStatement () {
+        match(TokenType.PRINT);
+        expr();
+        System.out.println("print");
+        match(TokenType.SEMICOLON);
     }
 
     void expr() {
