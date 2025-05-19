@@ -7,9 +7,9 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         boolean running = true;
 
-        System.out.println("=== Tradutor de Expressões Aritméticas ===");
+        System.out.println("=== Tradutor de Sentenças ===");
         System.out.println("Digite 'sair' para encerrar o programa");
-        System.out.println("Digite uma expressão aritmética (ex: 8+5-7+9)");
+        System.out.println("Digite uma sentença (statement -> printStatement | letStatement)");
 
         while (running) {
             System.out.print("\n> ");
@@ -21,7 +21,7 @@ public class Main {
             }
 
             if (input.isEmpty()) {
-                System.out.println("Por favor, digite uma expressão válida.");
+                System.out.println("Por favor, digite uma sentença válida.");
                 continue;
             }
 
@@ -29,6 +29,8 @@ public class Main {
                 System.out.println("\nTradução:");
                 Parser parser = new Parser(input.getBytes());
                 parser.parse();
+                Interpretador i = new Interpretador (parser.output());
+                i.run();
             } catch (Error e) {
                 System.out.println("Erro: " + e.getMessage());
             }
